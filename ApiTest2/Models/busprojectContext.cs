@@ -87,22 +87,21 @@ namespace ApiTest2.Models
 
                 entity.Property(e => e.BookingStatus).HasColumnName("booking_status");
 
-                entity.Property(e => e.CurrentCount).HasColumnName("current_count");
+                entity.Property(e => e.Bushire)
+                    .HasColumnName("bushire")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.CustomerContact)
-                    .IsRequired()
                     .HasColumnName("customer_contact")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CustomerEmail)
-                    .IsRequired()
                     .HasColumnName("customer_email")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CustomerName)
-                    .IsRequired()
                     .HasColumnName("customer_name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -110,7 +109,6 @@ namespace ApiTest2.Models
                 entity.Property(e => e.FareAmount).HasColumnName("fare_amount");
 
                 entity.Property(e => e.Feedback)
-                    .IsRequired()
                     .HasColumnName("feedback")
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -128,7 +126,6 @@ namespace ApiTest2.Models
                 entity.HasOne(d => d.Payment)
                     .WithMany(p => p.Booking)
                     .HasForeignKey(d => d.PaymentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("booking_fk2");
 
                 entity.HasOne(d => d.Schedule)
@@ -136,6 +133,11 @@ namespace ApiTest2.Models
                     .HasForeignKey(d => d.ScheduleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("booking_fk0");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Booking)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_user_id");
             });
 
             modelBuilder.Entity<Bus>(entity =>
@@ -150,9 +152,14 @@ namespace ApiTest2.Models
 
                 entity.Property(e => e.BusPlateNumber).HasColumnName("bus_plate_number");
 
-                entity.Property(e => e.BusType).HasColumnName("bus_type");
+                entity.Property(e => e.BusType)
+                    .HasColumnName("bus_type")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Capacity).HasColumnName("capacity");
+
+                entity.Property(e => e.CurrentCount).HasColumnName("current_count");
 
                 entity.Property(e => e.RouteId).HasColumnName("route_id");
 
@@ -182,14 +189,6 @@ namespace ApiTest2.Models
                     .HasColumnName("driver_name")
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Driver)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("DRIVER_fk0");
             });
 
             modelBuilder.Entity<Payment>(entity =>
@@ -292,12 +291,6 @@ namespace ApiTest2.Models
                     .HasColumnName("to_date")
                     .HasColumnType("date");
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasColumnName("user_id")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.HasOne(d => d.Bus)
                     .WithMany(p => p.Schedule)
                     .HasForeignKey(d => d.BusId)
@@ -325,6 +318,11 @@ namespace ApiTest2.Models
                 entity.Property(e => e.BookingId).HasColumnName("booking_id");
 
                 entity.Property(e => e.BusId).HasColumnName("bus_id");
+
+                entity.Property(e => e.Seatid)
+                    .HasColumnName("seatid")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.Seat)
@@ -376,10 +374,6 @@ namespace ApiTest2.Models
                     .HasColumnName("GENDER")
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Timestamp)
-                    .HasColumnName("timestamp")
-                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Userpassword)
                     .IsRequired()

@@ -17,9 +17,7 @@ namespace ApiTest2.Models
         public int DriverId { get; set; }
         public string DriverName { get; set; }
         public string DriverContact { get; set; }
-        public int UserId { get; set; }
 
-        public virtual User User { get; set; }
         public virtual ICollection<Schedule> Schedule { get; set; }
     }
 }

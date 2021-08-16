@@ -40,7 +40,20 @@ namespace ApiTest2.Controllers
 
             return routes;
         }
+        [HttpGet("getroutebyscheduleid")]
+        public async Task<ActionResult<Routes>> getroutebyscheduleid(int id)
+        {
+            var busid = (from s in _context.Schedule where s.ScheduleId == id select s.BusId).First();
+            int routeid = (from b in _context.Bus where b.BusId == busid select b.RouteId).First();
+            Routes starting = (from b in _context.Routes where b.RouteId == routeid select b).First();
 
+            if (starting == null)
+            {
+                return NotFound();
+            }
+
+            return starting;
+        }
         // PUT: api/Routes/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -72,7 +85,7 @@ namespace ApiTest2.Controllers
 
             return NoContent();
         }
-
+        
         // POST: api/Routes
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

@@ -40,7 +40,28 @@ namespace ApiTest2.Controllers
 
             return schedule;
         }
-
+        [HttpGet("schedulesgetbyid")]
+        public async Task<ActionResult<IEnumerable<Schedule>>> schedulesgetbyid(string from1,string to,DateTime viewdate)
+        {
+            var result =  _context.Routes.Where(r1 => r1.StartingPoint == from1 && r1.Destination == to).Count();
+            if(result != 0)
+            {
+                var result1 = _context.Routes.Where(r1 => r1.StartingPoint == from1 && r1.Destination == to).First().RouteId;
+                var busdetails = _context.Bus.Where(b => b.RouteId == result1).ToList();
+                var getschedules =  await _context.Schedule.Where(b => (from b1 in busdetails select b1.BusId).Contains(b.BusId) && b.FromDate.Equals(viewdate.Date)).ToListAsync();
+                if (getschedules == null)
+                {
+                    return NotFound();
+                }
+                return getschedules;
+            }
+            else
+            {
+                return NotFound();
+            }
+            
+        }
+        
         // PUT: api/Schedules/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

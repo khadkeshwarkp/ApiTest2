@@ -72,7 +72,28 @@ namespace ApiTest2.Controllers
 
             return NoContent();
         }
-
+        [HttpGet("getlastuserid")]
+        public async Task<ActionResult<int>> getlastuserid()
+        {
+            int userid = (from s in _context.User
+                          orderby s.UserId descending
+                          select s.UserId).FirstOrDefault();
+            if (userid == null)
+            {
+                return NotFound();
+            }
+            return userid + 1;
+        }
+        [HttpGet("verifyuser")]
+        public async Task<ActionResult<User>> verifyuser(string email, string pwd)
+        {
+            User user = (_context.User.Where(u1 => u1.EmailAddress == email && u1.Userpassword == pwd)).First();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return user;
+        }
         // POST: api/Users
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

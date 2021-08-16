@@ -26,7 +26,26 @@ namespace ApiTest2.Controllers
         {
             return await _context.Seat.ToListAsync();
         }
-
+        [HttpGet("getallseatsbyid")]
+        public async Task<ActionResult<IEnumerable<Seat>>> getallseatsbyid(int id)
+        {
+            var bookings = await _context.Seat.Where(b => b.BookingId == id).ToListAsync();
+            if (bookings == null)
+            {
+                return NotFound();
+            }
+            return bookings;
+        }
+        [HttpGet("getFilledseats")]
+        public async Task<ActionResult<IEnumerable<string>>> getFilledseats(int id)
+        {
+            var seatsids = (from s in _context.Seat.Where(s1 => s1.BusId== id) select s.Seatid).ToList();
+            if (seatsids == null)
+            {
+                return NotFound();
+            }
+            return seatsids;
+        }
         // GET: api/Seats/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Seat>> GetSeat(int id)
@@ -72,7 +91,18 @@ namespace ApiTest2.Controllers
 
             return NoContent();
         }
-
+        [HttpGet("getlastseatid")]
+        public async Task<ActionResult<int>> getlastseatid()
+        {
+            int seatid = (from s in _context.Seat
+                             orderby s.SeatNo descending
+                             select s.SeatNo).FirstOrDefault();
+            if (seatid == null)
+            {
+                return NotFound();
+            }
+            return seatid + 1;
+        }
         // POST: api/Seats
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -80,21 +110,9 @@ namespace ApiTest2.Controllers
         public async Task<ActionResult<Seat>> PostSeat(Seat seat)
         {
             _context.Seat.Add(seat);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (SeatExists(seat.SeatNo))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+           
+              _context.SaveChanges();
+            
 
             return CreatedAtAction("GetSeat", new { id = seat.SeatNo }, seat);
         }

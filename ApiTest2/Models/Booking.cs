@@ -21,16 +21,17 @@ namespace ApiTest2.Models
         public double FareAmount { get; set; }
         public double TotalAmount { get; set; }
         public int BookingStatus { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerContact { get; set; }
         public string CustomerEmail { get; set; }
-        public int CurrentCount { get; set; }
         public string Feedback { get; set; }
-        public int PaymentId { get; set; }
+        public int? PaymentId { get; set; }
+        public int? Bushire { get; set; }
 
         public virtual Payment Payment { get; set; }
         public virtual Schedule Schedule { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<Refund> Refund { get; set; }
         public virtual ICollection<Seat> Seat { get; set; }
     }

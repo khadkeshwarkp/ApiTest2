@@ -22,7 +22,6 @@ namespace ApiTest2.Models
         public TimeSpan EstimatedArrivalTime { get; set; }
         public double FareAmount { get; set; }
         public string Remarks { get; set; }
-        public string UserId { get; set; }
         public TimeSpan Time { get; set; }
 
         public virtual Bus Bus { get; set; }

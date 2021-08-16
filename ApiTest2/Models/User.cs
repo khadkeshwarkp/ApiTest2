@@ -11,7 +11,7 @@ namespace ApiTest2.Models
     {
         public User()
         {
-            Driver = new HashSet<Driver>();
+            Booking = new HashSet<Booking>();
         }
 
         public int UserId { get; set; }
@@ -23,9 +23,8 @@ namespace ApiTest2.Models
         public DateTime Dob { get; set; }
         public string Userpassword { get; set; }
         public int AccountStatus { get; set; }
-        public DateTime Timestamp { get; set; }
         public double Deposit { get; set; }
 
-        public virtual ICollection<Driver> Driver { get; set; }
+        public virtual ICollection<Booking> Booking { get; set; }
     }
 }

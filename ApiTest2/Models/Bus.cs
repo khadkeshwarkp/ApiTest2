@@ -17,9 +17,10 @@ namespace ApiTest2.Models
         public int BusId { get; set; }
         public int BusNumber { get; set; }
         public int BusPlateNumber { get; set; }
-        public int BusType { get; set; }
+        public string BusType { get; set; }
         public int Capacity { get; set; }
         public int RouteId { get; set; }
+        public int? CurrentCount { get; set; }
 
         public virtual Routes Route { get; set; }
         public virtual ICollection<Schedule> Schedule { get; set; }

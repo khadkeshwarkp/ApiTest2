@@ -12,6 +12,7 @@ namespace ApiTest2.Models
         public int SeatNo { get; set; }
         public int BookingId { get; set; }
         public int BusId { get; set; }
+        public string Seatid { get; set; }
 
         public virtual Booking Booking { get; set; }
     }
